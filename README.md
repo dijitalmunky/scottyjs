@@ -46,6 +46,50 @@ beam-me-up {options}
 - _--force_ or _-f_ - Update the bucket without asking (default: false, forced region can be overridden with _-r_)
 - _--update_ or _-u_ - Update existing bucket (default: false)
 
+### AWS Permissions
+
+The following permissions may be required in order to run scotty (e.g. you can skip
+the cloudfront permissions if you do not use cloud front).  Please ensure
+that the AWS profile you use has been given these permissions:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutBucketWebsite",
+                "s3:CreateBucket",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<your-bucket>",
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+            ],
+            "Resource": [
+                "arn:aws:s3:::<your-bucket>/*",
+            ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "cloudfront:CreateDistribution",
+            "cloudfront:CreateInvalidation",
+            "cloudfront:ListDistributions"
+          ],
+          "Resource": "*"
+        }
+    ]
+}
+```
+
 ### Examples
 
 #### _Create React App_ application
